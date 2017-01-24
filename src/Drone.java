@@ -15,6 +15,7 @@ public abstract class Drone {
     private double range;
     private Dot location;
     private Dot target;
+    private Base base;
 
     //Transport attributes
     private double weightCapacity;
@@ -24,6 +25,9 @@ public abstract class Drone {
 
     //Sort attribut
     private Sort sort;
+
+    //Tasks attribute
+    private Task task;
 
     private boolean reloading;
 
@@ -35,7 +39,7 @@ public abstract class Drone {
      * @param maxPacket         : the number of packets can load the drone
      * @param sort              : the sort of the drone (terrestrial / aerial)
      */
-    public Drone(double batteryMax, int speed, double range, double weightCapacity, int maxPacket, Sort sort) {
+    public Drone(double batteryMax, int speed, double range, double weightCapacity, int maxPacket, Sort sort, Task task) {
         this.batteryMax = batteryMax;
         this.speed = speed;
         this.range = range;
@@ -43,11 +47,13 @@ public abstract class Drone {
         this.maxPacket = maxPacket;
         this.sort = sort;
         this.battery = batteryMax;
-        this.location = new Dot(0,0);
+        this.location = new Dot(0, 0);
         loadedPackets = new ArrayList<Packet>();
         reloading = false;
-        target = new Dot(0,0);
         weight = 0.0;
+        this.task = task;
+        target = task.getLocation();
+        base = null;
     }
 
     public double getBatteryMax() {
@@ -146,6 +152,22 @@ public abstract class Drone {
         this.reloading = reloading;
     }
 
+    public Base getBase() {
+        return base;
+    }
+
+    public void setBase(Base base) {
+        this.base = base;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
     @Override
     public String toString() {
         return "Drone{" +
@@ -163,46 +185,55 @@ public abstract class Drone {
                 '}';
     }
 
-    /**
-     * @param dot   : the final dot the drone have to reach
-     */
-    public void toTravel(Dot dot) {
-        for(int i=1; i<=this.getSpeed(); i++){
-            //Check if the drone has already reach the target point
-            if(this.getLocation().equals(dot)){
+    public abstract void toDo(Dot dot);
 
-            } else {
-                //Check if the drone has enough energy to travel
-                if(this.getBattery() >=1) {
-                    this.location = this.location.shorterPath(dot);
-                    this.setBattery(this.getBattery()-1.0);
-                    for(Packet packet : loadedPackets){
-                        packet.setLocation(location.shorterPath(dot));
-                    }
+    public void toLade(Base base) {
+
+        boolean critPlace = false;
+        boolean haveBeenLaded = false;
+        int i = base.getListPacket().size();
+        ArrayList<Packet> toRemove = new ArrayList<Packet>();
+
+        //System.out.println(base.getListPacket().get(0).toString());
+        while (!critPlace && i > 0) {
+            if (loadedPackets.size() + 1 <= maxPacket) {
+                if (base.getListPacket().get(i-1).getWeight() + weight <= weightCapacity) {
+                    haveBeenLaded = true;
+                    loadedPackets.add(base.getListPacket().get(i-1));
+                    toRemove.add(base.getListPacket().get(i-1));
+                    weight = weight + base.getListPacket().get(i-1).getWeight();
+                    System.out.println("Packet ladded");
+                    System.out.println("");
+
                 }
-            }
-
-        }
-    }
-
-    public void toLade(Packet packet) {
-        //Check if we have the capacity and the place to carry the packet
-        if(this.getWeight()+packet.getWeight() <= this.getWeightCapacity()) {
-            if(this.getMaxPacket()>= this.getLoadedPackets().size()+1){
-                loadedPackets.add(packet);
-                weight = weight + packet.getWeight();
-                packet.setLoaded(true);
+                i--;
             } else {
-                System.out.println("Max packets capacity reached !");
+                critPlace = true;
             }
-        } else {
-            System.out.println("Weight capacity reached !");
         }
+
+        for (Packet p : toRemove) {
+            p.setLoaded(true);
+            base.getListDrone().remove(p);
+        }
+
+        if(haveBeenLaded){
+            target = loadedPackets.get(0).getTarget();
+            task = new Task(Task.DUMP,target,null);
+            System.out.println(this.toString());
+        }
+
     }
 
     public void toDump() {
         if(location.equals(loadedPackets.get(0).getTarget())){
             loadedPackets.get(0).setLoaded(false);
+            base.getDropedPacket().add(loadedPackets.get(0));
+            weight = weight - loadedPackets.get(0).getWeight();
+            loadedPackets.remove(0);
+            if(!loadedPackets.isEmpty()){
+                target = loadedPackets.get(0).getTarget();
+            }
         }
     }
 }

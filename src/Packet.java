@@ -15,6 +15,16 @@ public class Packet {
         loaded = false;
     }
 
+    @Override
+    public String toString() {
+        return "Packet{" +
+                "weight=" + weight +
+                ", target=" + target +
+                ", location=" + location +
+                ", loaded=" + loaded +
+                '}';
+    }
+
     public double getWeight() {
         return weight;
     }
