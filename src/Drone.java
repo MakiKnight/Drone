@@ -32,12 +32,12 @@ public abstract class Drone {
     private boolean reloading;
 
     /**
-     * @param batteryMax        : max level of battery
-     * @param speed             : number of times the drone can move
-     * @param range             : the range where can travels a drone
-     * @param weightCapacity    : the max weight of the drone
-     * @param maxPacket         : the number of packets can load the drone
-     * @param sort              : the sort of the drone (terrestrial / aerial)
+     * @param batteryMax     : max level of battery
+     * @param speed          : number of times the drone can move
+     * @param range          : the range where can travels a drone
+     * @param weightCapacity : the max weight of the drone
+     * @param maxPacket      : the number of packets can load the drone
+     * @param sort           : the sort of the drone (terrestrial / aerial)
      */
     public Drone(double batteryMax, int speed, double range, double weightCapacity, int maxPacket, Sort sort, Task task) {
         this.batteryMax = batteryMax;
@@ -197,11 +197,11 @@ public abstract class Drone {
         //System.out.println(base.getListPacket().get(0).toString());
         while (!critPlace && i > 0) {
             if (loadedPackets.size() + 1 <= maxPacket) {
-                if (base.getListPacket().get(i-1).getWeight() + weight <= weightCapacity) {
+                if (base.getListPacket().get(i - 1).getWeight() + weight <= weightCapacity) {
                     haveBeenLaded = true;
-                    loadedPackets.add(base.getListPacket().get(i-1));
-                    toRemove.add(base.getListPacket().get(i-1));
-                    weight = weight + base.getListPacket().get(i-1).getWeight();
+                    loadedPackets.add(base.getListPacket().get(i - 1));
+                    toRemove.add(base.getListPacket().get(i - 1));
+                    weight = weight + base.getListPacket().get(i - 1).getWeight();
                     System.out.println("Packet ladded");
                     System.out.println("");
 
@@ -217,24 +217,24 @@ public abstract class Drone {
             base.getListDrone().remove(p);
         }
 
-        if(haveBeenLaded){
+        if (haveBeenLaded) {
             target = loadedPackets.get(0).getTarget();
-            task = new Task(Task.DUMP,target,null);
+            task = new Task(Task.TaskTypes.DUMP, target, null);
             System.out.println(this.toString());
         }
 
     }
 
     public void toDump() {
-        if(location.equals(loadedPackets.get(0).getTarget())){
+        if (location.equals(loadedPackets.get(0).getTarget())) {
             loadedPackets.get(0).setLoaded(false);
             base.getDropedPacket().add(loadedPackets.get(0));
             weight = weight - loadedPackets.get(0).getWeight();
             loadedPackets.remove(0);
-            if(!loadedPackets.isEmpty()){
+            if (!loadedPackets.isEmpty()) {
                 target = loadedPackets.get(0).getTarget();
             } else {
-                task = new Task(Task.RECHARGE_BASE,new Dot(0,0),null);
+                task = new Task(Task.TaskTypes.RECHARGE_BASE, new Dot(0, 0), null);
             }
         }
     }

@@ -9,10 +9,10 @@ public abstract class Sort {
     private double packetCoef;
 
     /**
-     * @param speedCoef     : coeff for the speed
-     * @param rangeCoef     : coeff for the range
-     * @param weightCoef    : coeff for the weight
-     * @param packetCoef    : coeff for the number of packets
+     * @param speedCoef  : coeff for the speed
+     * @param rangeCoef  : coeff for the range
+     * @param weightCoef : coeff for the weight
+     * @param packetCoef : coeff for the number of packets
      */
     public Sort(double speedCoef, double rangeCoef, double weightCoef, double packetCoef) {
         this.speedCoef = speedCoef;

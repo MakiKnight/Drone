@@ -17,6 +17,18 @@ public class Dot {
         this.ord = ord;
     }
 
+    public static void main(String[] args) {
+        Dot dot1 = new Dot(-25, 87);
+        System.out.println(dot1.toString());
+        Dot dot2 = new Dot(-500, 378);
+        System.out.println(dot2.toString());
+        Dot dot3 = dot1.shorterPath(dot2);
+
+        System.out.println(dot1.shorterPath(dot2).toString());
+        //System.out.println(dot3.shorterPath(dot2).toString());
+        System.out.println(dot1.forecastEnergy(dot2));
+    }
+
     public int getAbs() {
         return abs;
     }
@@ -59,45 +71,45 @@ public class Dot {
      * @param dot : the final point you want to reach
      * @return the next nearest point from your location to the point you want to reach
      */
-    public Dot shorterPath(Dot dot){
+    public Dot shorterPath(Dot dot) {
         //Create the return point
-        Dot target = new Dot(abs,ord);
+        Dot target = new Dot(abs, ord);
 
         //Check if abscissa and ordinate of the point is lesser or not that final point
         boolean diffAbs = abs < dot.getAbs();
         boolean diffOrd = ord < dot.getOrd();
 
-        if(abs == dot.getAbs() && ord == dot.getOrd()){
+        if (abs == dot.getAbs() && ord == dot.getOrd()) {
             //We are arrived
             target = dot;
         } else {
             //Same abscissa but not the same ordinate
-            if(abs == dot.getAbs() && ord != dot.getOrd()){
-                if(!diffOrd){
-                    target = new Dot(abs,ord+1);
+            if (abs == dot.getAbs() && ord != dot.getOrd()) {
+                if (!diffOrd) {
+                    target = new Dot(abs, ord + 1);
                 } else {
-                    target = new Dot(abs, ord-1);
+                    target = new Dot(abs, ord - 1);
                 }
             } else {
                 //Same ordinate but not the same abscissa
-                if(abs != dot.getAbs() && ord == dot.getOrd()){
-                    if(diffAbs){
-                        target = new Dot(abs+1,ord);
+                if (abs != dot.getAbs() && ord == dot.getOrd()) {
+                    if (diffAbs) {
+                        target = new Dot(abs + 1, ord);
                     } else {
-                        target = new Dot(abs-1, ord);
+                        target = new Dot(abs - 1, ord);
                     }
                 } else {
                     //Both abscissa and ordinate are different
-                    if(diffOrd && diffAbs){
-                        target = new Dot(abs+1,ord+1);
+                    if (diffOrd && diffAbs) {
+                        target = new Dot(abs + 1, ord + 1);
                     } else {
-                        if(diffOrd && !diffAbs){
-                            target = new Dot(abs-1,ord+1);
+                        if (diffOrd && !diffAbs) {
+                            target = new Dot(abs - 1, ord + 1);
                         } else {
-                            if(!diffOrd && diffAbs){
-                                target = new Dot(abs+1,ord-1);
+                            if (!diffOrd && diffAbs) {
+                                target = new Dot(abs + 1, ord - 1);
                             } else {
-                                target = new Dot(abs-1,ord-1);
+                                target = new Dot(abs - 1, ord - 1);
                             }
                         }
                     }
@@ -109,7 +121,7 @@ public class Dot {
 
     /**
      * @param dot : the final dot you want to know how much ernegy you need to reach
-     * @return  the forecast energy
+     * @return the forecast energy
      */
     public int forecastEnergy(Dot dot) {
         if (this.equals(dot)) {
@@ -117,17 +129,5 @@ public class Dot {
         } else {
             return 1 + this.shorterPath(dot).forecastEnergy(dot);
         }
-    }
-
-    public static void main(String[] args) {
-        Dot dot1 = new Dot(-25,87);
-        System.out.println(dot1.toString());
-        Dot dot2 = new Dot(-500,378);
-        System.out.println(dot2.toString());
-        Dot dot3 = dot1.shorterPath(dot2);
-
-        System.out.println(dot1.shorterPath(dot2).toString());
-        //System.out.println(dot3.shorterPath(dot2).toString());
-        System.out.println(dot1.forecastEnergy(dot2));
     }
 }

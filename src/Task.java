@@ -3,36 +3,30 @@
  */
 public class Task {
 
-    private int kind;
-    private Dot location;
-    private Drone drone;
-
     public final static int RECHARGE_DRONE = 1;
     public final static int RECHARGE_BASE = 2;
     public final static int LADE = 3;
     public final static int DUMP = 4;
-    public final static int  MOVE = 5;
-
+    public final static int MOVE = 5;
+    private final TaskTypes type;
+    private Dot location;
+    private Drone drone;
     /**
-     * @param kind      : 1 = recharge a Drone
-     *                    2 = recharge at the base
-     *                    3 = lade a packet
-     *                    4 = dump a packet
-     *                    5 = move somewhere
-     * @param location  : where the task need to be execute
+     * @param type     : 1 = recharge a Drone
+     *                 2 = recharge at the base
+     *                 3 = lade a packet
+     *                 4 = dump a packet
+     *                 5 = move somewhere
+     * @param location : where the task need to be execute
      */
-    public Task(int kind, Dot location, Drone drone) {
-        this.kind = kind;
+    public Task(TaskTypes type, Dot location, Drone drone) {
+        this.type = type;
         this.location = location;
         this.drone = drone;
     }
 
-    public int getKind() {
-        return kind;
-    }
-
-    public void setKind(int kind) {
-        this.kind = kind;
+    public TaskTypes getType() {
+        return type;
     }
 
     public Dot getLocation() {
@@ -49,5 +43,13 @@ public class Task {
 
     public void setDrone(Drone drone) {
         this.drone = drone;
+    }
+
+    public enum TaskTypes {
+        RECHARGE_DRONE,
+        RECHARGE_BASE,
+        LADE,
+        DUMP,
+        MOVE
     }
 }

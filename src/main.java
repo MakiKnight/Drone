@@ -1,6 +1,3 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
-
 import java.util.ArrayList;
 
 /**
@@ -9,14 +6,13 @@ import java.util.ArrayList;
 public class main {
 
 
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
 
         Scout scout1 = new Scout(new Aerial());
         Carrier carrier1 = new Carrier();
 
-        Packet packet1 = new Packet(60.0, new Dot(10,-8));
+        Packet packet1 = new Packet(60.0, new Dot(10, -8));
 
         /*scout1.setTarget(new Dot(456,-47));
         while(scout1.getBattery()>1 && !scout1.getLocation().equals(scout1.getTarget())) {
@@ -37,28 +33,28 @@ public class main {
 
         ArrayList<Drone> listDrone = new ArrayList<Drone>();
         listDrone.add(carrier1);
-       // listDrone.add(scout1);
+        // listDrone.add(scout1);
         ArrayList<Packet> listPacket = new ArrayList<Packet>();
         listPacket.add(packet1);
 
-       Base base = new Base(listDrone,listPacket);
-       for(Drone drone : base.getListDrone()){
-           drone.setBase(base);
-       }
-       for(Drone drone : base.getListDrone()) {
+        Base base = new Base(listDrone, listPacket);
+        for (Drone drone : base.getListDrone()) {
+            drone.setBase(base);
+        }
+        for (Drone drone : base.getListDrone()) {
             drone.toLade(base);
         }
         ArrayList<Packet> listDropedPacket = new ArrayList<Packet>();
-       base.setDropedPacket(listDropedPacket);
+        base.setDropedPacket(listDropedPacket);
 
-       while(true) {
-            for(Drone drone: listDrone){
+        while (true) {
+            for (Drone drone : listDrone) {
                 drone.toDo(drone.getTarget());
                 System.out.println("* * * * * * * * * * * * * * * * * * *");
-                System.out.println("Location : "+ drone.getLocation().toString());
-                System.out.println("Target   : "+ drone.getTarget().toString());
-                System.out.println("Forecast energy : "+ drone.getLocation().forecastEnergy(drone.getTarget()));
-                System.out.println("Battery : "+drone.getBattery()+"/"+drone.getBatteryMax());
+                System.out.println("Location : " + drone.getLocation().toString());
+                System.out.println("Target   : " + drone.getTarget().toString());
+                System.out.println("Forecast energy : " + drone.getLocation().forecastEnergy(drone.getTarget()));
+                System.out.println("Battery : " + drone.getBattery() + "/" + drone.getBatteryMax());
                 System.out.println("");
             }
         }

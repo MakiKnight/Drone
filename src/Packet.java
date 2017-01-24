@@ -11,7 +11,7 @@ public class Packet {
     public Packet(double weight, Dot target) {
         this.weight = weight;
         this.target = target;
-        location = new Dot(0,0);
+        location = new Dot(0, 0);
         loaded = false;
     }
 

@@ -4,6 +4,6 @@
 public class Terrestrial extends Sort {
 
     public Terrestrial() {
-        super(0.75,0.75,1.25,1.25);
+        super(0.75, 0.75, 1.25, 1.25);
     }
 }
