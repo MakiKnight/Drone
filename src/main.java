@@ -42,11 +42,16 @@ public class main {
         listPacket.add(packet1);
 
        Base base = new Base(listDrone,listPacket);
-       /* for(Drone drone : base.getListDrone()) {
+       for(Drone drone : base.getListDrone()){
+           drone.setBase(base);
+       }
+       for(Drone drone : base.getListDrone()) {
             drone.toLade(base);
-        }*/
+        }
+        ArrayList<Packet> listDropedPacket = new ArrayList<Packet>();
+       base.setDropedPacket(listDropedPacket);
 
-       /* while(true) {
+       while(true) {
             for(Drone drone: listDrone){
                 drone.toDo(drone.getTarget());
                 System.out.println("* * * * * * * * * * * * * * * * * * *");
@@ -56,17 +61,7 @@ public class main {
                 System.out.println("Battery : "+drone.getBattery()+"/"+drone.getBatteryMax());
                 System.out.println("");
             }
-        }*/
-
-        System.out.println("* * * * * * * * * * * * * * * * * * *");
-        System.out.println("Location : "+  carrier1.getLocation().toString());
-        System.out.println("Target   : "+  carrier1.getTarget().toString());
-        System.out.println("Forecast energy : "+  carrier1.getLocation().forecastEnergy( carrier1.getTarget()));
-        System.out.println("Battery : "+ carrier1.getBattery()+"/"+ carrier1.getBatteryMax());
-        System.out.println("Weight Max "+ carrier1.getWeightCapacity());
-        System.out.println("");
-       carrier1.toLade(base);
-        System.out.println(carrier1.getWeight());
+        }
 
     }
 }

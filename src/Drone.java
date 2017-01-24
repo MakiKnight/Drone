@@ -233,6 +233,8 @@ public abstract class Drone {
             loadedPackets.remove(0);
             if(!loadedPackets.isEmpty()){
                 target = loadedPackets.get(0).getTarget();
+            } else {
+                task = new Task(Task.RECHARGE_BASE,new Dot(0,0),null);
             }
         }
     }
