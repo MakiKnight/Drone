@@ -86,9 +86,9 @@ public class Dot {
             //Same abscissa but not the same ordinate
             if (abs == dot.getAbs() && ord != dot.getOrd()) {
                 if (!diffOrd) {
-                    target = new Dot(abs, ord + 1);
-                } else {
                     target = new Dot(abs, ord - 1);
+                } else {
+                    target = new Dot(abs, ord + 1);
                 }
             } else {
                 //Same ordinate but not the same abscissa
@@ -124,10 +124,6 @@ public class Dot {
      * @return the forecast energy
      */
     public int forecastEnergy(Dot dot) {
-        if (this.equals(dot)) {
-            return 0;
-        } else {
-            return 1 + this.shorterPath(dot).forecastEnergy(dot);
-        }
+        return Math.max(Math.abs(dot.getAbs()-abs),Math.abs(dot.getOrd()-ord));
     }
 }

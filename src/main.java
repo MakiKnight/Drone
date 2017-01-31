@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by makiknight on 24/01/17.
@@ -12,7 +14,11 @@ public class main {
         Scout scout1 = new Scout(new Aerial());
         Carrier carrier1 = new Carrier();
 
-        Packet packet1 = new Packet(60.0, new Dot(10, -8));
+        Packet packet1 = new Packet(10.0, new Dot(10, -8));
+        Packet packet2 = new Packet(10.0, new Dot(-7,4));
+        Packet packet3 = new Packet(10.0,new Dot(-2,-4));
+        Packet packet4 = new Packet(10.0, new Dot(4,3));
+
 
         /*scout1.setTarget(new Dot(456,-47));
         while(scout1.getBattery()>1 && !scout1.getLocation().equals(scout1.getTarget())) {
@@ -32,22 +38,29 @@ public class main {
         }*/
 
         ArrayList<Drone> listDrone = new ArrayList<Drone>();
-        listDrone.add(carrier1);
-        // listDrone.add(scout1);
+        //listDrone.add(carrier1);
+        listDrone.add(scout1);
         ArrayList<Packet> listPacket = new ArrayList<Packet>();
         listPacket.add(packet1);
+        listPacket.add(packet2);
+        listPacket.add(packet3);
+        listPacket.add(packet4);
+
+        HashSet<Repairer> listRepairer = new HashSet<Repairer>();
 
         Base base = new Base(listDrone, listPacket);
         for (Drone drone : base.getListDrone()) {
             drone.setBase(base);
         }
-        for (Drone drone : base.getListDrone()) {
-            drone.toLade(base);
-        }
         ArrayList<Packet> listDropedPacket = new ArrayList<Packet>();
         base.setDropedPacket(listDropedPacket);
 
-        while (true) {
+        for(int i = 0; i<=100; i++ ) {
+            for(Drone drone : base.getListNeedEnergy()) {
+                if(!drone.isSaviorInProgress()){
+
+                }
+            }
             for (Drone drone : listDrone) {
                 drone.toDo(drone.getTarget());
                 System.out.println("* * * * * * * * * * * * * * * * * * *");

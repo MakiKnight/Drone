@@ -30,6 +30,7 @@ public abstract class Drone {
     private Task task;
 
     private boolean reloading;
+    private boolean saviorInProgress;
 
     /**
      * @param batteryMax     : max level of battery
@@ -50,6 +51,7 @@ public abstract class Drone {
         this.location = new Dot(0, 0);
         loadedPackets = new ArrayList<Packet>();
         reloading = false;
+        saviorInProgress = false;
         weight = 0.0;
         this.task = task;
         target = task.getLocation();
@@ -168,6 +170,14 @@ public abstract class Drone {
         this.task = task;
     }
 
+    public boolean isSaviorInProgress() {
+        return saviorInProgress;
+    }
+
+    public void setSaviorInProgress(boolean saviorInProgress) {
+        this.saviorInProgress = saviorInProgress;
+    }
+
     @Override
     public String toString() {
         return "Drone{" +
@@ -214,13 +224,16 @@ public abstract class Drone {
 
         for (Packet p : toRemove) {
             p.setLoaded(true);
-            base.getListDrone().remove(p);
+            base.getListPacket().remove(p);
         }
 
         if (haveBeenLaded) {
             target = loadedPackets.get(0).getTarget();
             task = new Task(Task.TaskTypes.DUMP, target, null);
             System.out.println(this.toString());
+        } else {
+            target = new Dot(0,0);
+            task = new Task(Task.TaskTypes.LADE,target,null);
         }
 
     }
@@ -235,7 +248,29 @@ public abstract class Drone {
                 target = loadedPackets.get(0).getTarget();
             } else {
                 task = new Task(Task.TaskTypes.RECHARGE_BASE, new Dot(0, 0), null);
+                target = new Dot(0,0);
             }
+        }
+    }
+
+    public void toMove() {
+        if(location.equals(target)){
+            if(battery>speed) {
+                boolean goodTarget = false;
+                Dot dot = new Dot(0,0);
+                while(!goodTarget) {
+                    dot.setAbs((int)(-1*range/2 + Math.random()*range));
+                    dot.setOrd((int)(-1*range/2 + Math.random()*range));
+                    goodTarget = location.forecastEnergy(dot) < battery;
+                }
+                task = new Task(Task.TaskTypes.MOVE, dot,null);
+                target = task.getLocation();
+            } else {
+                if(!base.getListNeedEnergy().contains(this)) {
+                    base.getListNeedEnergy().add(this);
+                }
+            }
+
         }
     }
 }

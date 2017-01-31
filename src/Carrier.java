@@ -4,7 +4,7 @@
 public class Carrier extends Drone {
 
     public Carrier() {
-        super(200, 2, 100, 500, 10, new Terrestrial(), new Task(Task.TaskTypes.MOVE, new Dot(0, 0), null));
+        super(200, 2, 100, 500, 10, new Terrestrial(), new Task(Task.TaskTypes.LADE, new Dot(0, 0), null));
         this.setSpeed((int) (Math.floor(getSpeed() * getSort().getSpeedCoef())));
         this.setRange(Math.floor(getRange() * getSort().getRangeCoef()));
         this.setWeightCapacity(Math.floor(getWeightCapacity() * getSort().getWeightCoef()));
@@ -23,7 +23,8 @@ public class Carrier extends Drone {
 
                         break;
                     case RECHARGE_BASE:
-                        this.setBattery(this.getBatteryMax());
+                        setBattery(getBatteryMax());
+                        toLade(getBase());
                         break;
                     case LADE:
                         this.toLade(this.getBase());

@@ -8,11 +8,21 @@ public class Base {
     private ArrayList<Drone> listDrone;
     private ArrayList<Packet> listPacket;
     private ArrayList<Packet> dropedPacket;
+    private ArrayList<Drone> listNeedEnergy;
 
     public Base(ArrayList<Drone> listDrone, ArrayList<Packet> listPacket) {
         this.listDrone = listDrone;
         this.listPacket = listPacket;
         dropedPacket = new ArrayList<Packet>();
+        listNeedEnergy = new ArrayList<>();
+    }
+
+    public ArrayList<Drone> getListNeedEnergy() {
+        return listNeedEnergy;
+    }
+
+    public void setListNeedEnergy(ArrayList<Drone> listNeedEnergy) {
+        this.listNeedEnergy = listNeedEnergy;
     }
 
     public ArrayList<Drone> getListDrone() {

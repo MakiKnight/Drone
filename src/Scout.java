@@ -4,7 +4,7 @@
 public class Scout extends Drone {
 
     public Scout(Sort sort) {
-        super(100, 4, 200, 50, 1, sort, new Task(Task.TaskTypes.MOVE, new Dot(-300 + (int) (Math.random() * 600), -300 + (int) (Math.random() * 600)), null));
+        super(100, 4, 200, 50, 1, sort, new Task(Task.TaskTypes.MOVE, new Dot(0,0), null));
         this.setSpeed((int) (Math.floor(getSpeed() * getSort().getSpeedCoef())));
         this.setRange(Math.floor(getRange() * getSort().getRangeCoef()));
         this.setWeightCapacity(Math.floor(getWeightCapacity() * getSort().getWeightCoef()));
@@ -32,7 +32,7 @@ public class Scout extends Drone {
                         this.toDump();
                         break;
                     case MOVE:
-
+                        this.toMove();
                         break;
                 }
             } else {
